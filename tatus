@@ -1,0 +1,81 @@
+[1mdiff --git a/MANN/Utils/__pycache__/Generator.cpython-35.pyc b/MANN/Utils/__pycache__/Generator.cpython-35.pyc[m
+[1mindex 38e5417..d722e37 100644[m
+Binary files a/MANN/Utils/__pycache__/Generator.cpython-35.pyc and b/MANN/Utils/__pycache__/Generator.cpython-35.pyc differ
+[1mdiff --git a/MANN/Utils/__pycache__/Images.cpython-35.pyc b/MANN/Utils/__pycache__/Images.cpython-35.pyc[m
+[1mindex e731054..6bd5bf2 100644[m
+Binary files a/MANN/Utils/__pycache__/Images.cpython-35.pyc and b/MANN/Utils/__pycache__/Images.cpython-35.pyc differ
+[1mdiff --git a/MANN/Utils/__pycache__/Metrics.cpython-35.pyc b/MANN/Utils/__pycache__/Metrics.cpython-35.pyc[m
+[1mindex 6c486a7..98876f0 100644[m
+Binary files a/MANN/Utils/__pycache__/Metrics.cpython-35.pyc and b/MANN/Utils/__pycache__/Metrics.cpython-35.pyc differ
+[1mdiff --git a/MANN/Utils/__pycache__/__init__.cpython-35.pyc b/MANN/Utils/__pycache__/__init__.cpython-35.pyc[m
+[1mindex ee24690..658fda3 100644[m
+Binary files a/MANN/Utils/__pycache__/__init__.cpython-35.pyc and b/MANN/Utils/__pycache__/__init__.cpython-35.pyc differ
+[1mdiff --git a/MANN/Utils/__pycache__/init.cpython-35.pyc b/MANN/Utils/__pycache__/init.cpython-35.pyc[m
+[1mindex 633de6f..d9bcb2a 100644[m
+Binary files a/MANN/Utils/__pycache__/init.cpython-35.pyc and b/MANN/Utils/__pycache__/init.cpython-35.pyc differ
+[1mdiff --git a/MANN/Utils/__pycache__/similarities.cpython-35.pyc b/MANN/Utils/__pycache__/similarities.cpython-35.pyc[m
+[1mindex f4d13f8..6f15165 100644[m
+Binary files a/MANN/Utils/__pycache__/similarities.cpython-35.pyc and b/MANN/Utils/__pycache__/similarities.cpython-35.pyc differ
+[1mdiff --git a/MANN/Utils/__pycache__/tf_utils.cpython-35.pyc b/MANN/Utils/__pycache__/tf_utils.cpython-35.pyc[m
+[1mindex c8f4cb1..bb2aceb 100644[m
+Binary files a/MANN/Utils/__pycache__/tf_utils.cpython-35.pyc and b/MANN/Utils/__pycache__/tf_utils.cpython-35.pyc differ
+[1mdiff --git a/MANN/__pycache__/Model.cpython-35.pyc b/MANN/__pycache__/Model.cpython-35.pyc[m
+[1mindex f950b17..f304479 100644[m
+Binary files a/MANN/__pycache__/Model.cpython-35.pyc and b/MANN/__pycache__/Model.cpython-35.pyc differ
+[1mdiff --git a/MANN/__pycache__/__init__.cpython-35.pyc b/MANN/__pycache__/__init__.cpython-35.pyc[m
+[1mindex 69febff..8e9d115 100644[m
+Binary files a/MANN/__pycache__/__init__.cpython-35.pyc and b/MANN/__pycache__/__init__.cpython-35.pyc differ
+[1mdiff --git a/Omniglot.py b/Omniglot.py[m
+[1mindex 80f2614..44b85bd 100644[m
+[1m--- a/Omniglot.py[m
+[1m+++ b/Omniglot.py[m
+[36m@@ -80,8 +80,10 @@[m [mdef omniglot():[m
+     saver = tf.train.Saver()[m
+     [m
+     #if saved[m
+[32m+[m[32m    saver = tf.train.import_meta_graph(path_for_saves+"model.ckpt.meta")[m
+[32m+[m[32m    saver.restore(sess,tf.train.latest_checkpoint(path_for_saves))[m
+     #saver.restore(sess, path_for_saves+"model.ckpt")[m
+[31m-    #print("Model restored.")[m
+[32m+[m[32m    print("Model restored.")[m
+ [m
+     t0 = time.time()[m
+     all_scores, scores, accs = [],[],np.zeros(generator.nb_samples_per_class)[m
+[36m@@ -110,10 +112,11 @@[m [mdef omniglot():[m
+             all_scores.append(score)[m
+             scores.append(score)[m
+             accs += acc[m
+[31m-            if i>0 and not (i%100):[m
+[31m-                print((accs / 100.0))[m
+[31m-                print(('Episode %05d: %.6f' % (i, np.mean(score))))[m
+[32m+[m[32m            if i>0 and not (i%5):[m
+[32m+[m[32m                print((accs / 5.0))[m
+                 scores, accs = [], np.zeros(generator.nb_samples_per_class)[m
+[32m+[m[32m                print(('Episode %05d: %.6f ' % (i, np.mean(score))))[m
+[32m+[m[32m                print('scores ',scores, 'accs', accs);[m
+                 save_path = saver.save(sess, path_for_saves+"model.ckpt")[m
+                 print("Model saved in file: ", save_path )[m
+ [m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 91b94a0..5dfc5ac 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -3,3 +3,6 @@[m [mMinimum data points to learn (train nn) and get accuracy[m
+ [m
+ [m
+ Reference: https://github.com/llSourcell/How-to-Learn-from-Little-Data[m
+[32m+[m
+[32m+[m[32mTo check with alll the forks:[m[41m [m
+[32m+[m[32me.g. https://github.com/marcostrinca/How-to-Learn-from-Little-Data/commit/078058ed44163723fb753c1340a20aaf9128729b[m
+[1mdiff --git a/data/session/events.out.tfevents.1507986893.multiverse b/data/session/events.out.tfevents.1507986893.multiverse[m
+[1mindex 0204c30..c0b72a7 100644[m
+Binary files a/data/session/events.out.tfevents.1507986893.multiverse and b/data/session/events.out.tfevents.1507986893.multiverse differ
+[1mdiff --git a/data/session/model.ckpt.data-00000-of-00001 b/data/session/model.ckpt.data-00000-of-00001[m
+[1mindex b40d317..c011d91 100644[m
+Binary files a/data/session/model.ckpt.data-00000-of-00001 and b/data/session/model.ckpt.data-00000-of-00001 differ
+[1mdiff --git a/data/session/model.ckpt.index b/data/session/model.ckpt.index[m
+[1mindex d402c36..5f51ca3 100644[m
+Binary files a/data/session/model.ckpt.index and b/data/session/model.ckpt.index differ
+[1mdiff --git a/data/session/model.ckpt.meta b/data/session/model.ckpt.meta[m
+[1mindex 6c6cf08..7c82c9b 100644[m
+Binary files a/data/session/model.ckpt.meta and b/data/session/model.ckpt.meta differ

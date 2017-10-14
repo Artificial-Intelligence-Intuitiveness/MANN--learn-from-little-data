@@ -80,8 +80,10 @@ def omniglot():
     saver = tf.train.Saver()
     
     #if saved
+    saver = tf.train.import_meta_graph(path_for_saves+"model.ckpt.meta")
+    saver.restore(sess,tf.train.latest_checkpoint(path_for_saves))
     #saver.restore(sess, path_for_saves+"model.ckpt")
-    #print("Model restored.")
+    print("Model restored.")
 
     t0 = time.time()
     all_scores, scores, accs = [],[],np.zeros(generator.nb_samples_per_class)
@@ -110,10 +112,11 @@ def omniglot():
             all_scores.append(score)
             scores.append(score)
             accs += acc
-            if i>0 and not (i%100):
-                print((accs / 100.0))
-                print(('Episode %05d: %.6f' % (i, np.mean(score))))
+            if i>0 and not (i%5): #100
+                print((accs / 5.0)) #100
                 scores, accs = [], np.zeros(generator.nb_samples_per_class)
+                print(('Episode %05d: %.6f ' % (i, np.mean(score))))
+                print('scores ',scores, 'accs', accs);
                 save_path = saver.save(sess, path_for_saves+"model.ckpt")
                 print("Model saved in file: ", save_path )
 
