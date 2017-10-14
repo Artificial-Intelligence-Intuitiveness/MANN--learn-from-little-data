@@ -93,7 +93,7 @@ def omniglot():
 
     print('Training the model')
 
-
+    g_save_path = ''
 
     try:
         for i, (batch_input, batch_output) in generator:
@@ -108,21 +108,23 @@ def omniglot():
             temp = sum_out.eval(feed_dict)
             summary = merged.eval(feed_dict)
             train_writer.add_summary(summary, i)
-            print((i, ' ',temp))
+            print(("[%05d] current sum") % (i), temp)
+            #print((temp))
             all_scores.append(score)
             scores.append(score)
             accs += acc
-            if i>0 and not (i%5): #100
-                print((accs / 5.0)) #100
-                scores, accs = [], np.zeros(generator.nb_samples_per_class)
-                print(('Episode %05d: %.6f ' % (i, np.mean(score))))
-                print('scores ',scores, 'accs', accs);
+            if i>0 and not (i%3):
+                #print((accs / 3))
                 save_path = saver.save(sess, path_for_saves+"model.ckpt")
-                print("Model saved in file: ", save_path )
+                g_save_path = save_path
+                print(('Episode %05d: %.6f, file updates') % (i, np.mean(score)), (accs / 3))
+                scores, accs = [], np.zeros(generator.nb_samples_per_class)
+                #print("Model saved in file: ", save_path )
 
 
     except KeyboardInterrupt:
         print((time.time() - t0))
+        print("Model saved in file: ", g_save_path )
         pass
 
 if __name__ == '__main__':
